@@ -146,3 +146,77 @@ test('purchase with login', async ({ page }) => {
       await page.getByRole('link', { name: 'Admin' }).click();
       await page.getByText('Mama Ricci\'s kitchen').click();
     });
+
+    test('admin create/delete franchise', async ({ page }) => {
+        await page.goto('http://localhost:5173/');
+
+        await page.getByRole('link', { name: 'Login' }).click();
+        
+        await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+        await page.getByRole('textbox', { name: 'Email address' }).press('Tab');
+        await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+        await page.getByRole('button', { name: 'Login' }).click();
+        await page.getByRole('link', { name: 'Admin' }).click();
+        
+        await expect(page.getByRole('heading')).toContainText('Mama Ricci\'s kitchen');
+
+        
+        await page.getByRole('button', { name: 'Add Franchise' }).click();
+        await page.getByRole('textbox', { name: 'franchise name' }).click();
+        await page.getByRole('textbox', { name: 'franchise name' }).fill('BYU');
+        await page.getByRole('textbox', { name: 'franchisee admin email' }).click();
+        await page.getByRole('textbox', { name: 'franchisee admin email' }).fill('a@jwt.com');
+        await page.getByRole('button', { name: 'Create' }).click();
+        await expect(page.getByRole('cell', { name: 'BYU' })).toBeVisible();
+
+        
+        await page.getByRole('row', { name: 'BYU 常用名字 Close' }).getByRole('button').click();
+        await expect(page.getByText('Sorry to see you go')).toBeVisible();
+        await page.getByRole('button', { name: 'Close' }).click();
+        await expect(page.getByRole('cell', { name: 'BYU' })).not.toBeVisible();
+    });
+
+    test('about page', async ({ page }) => {
+      await page.goto('http://localhost:5173/');
+
+
+      await page.getByRole('link', { name: 'About' }).click();
+      await expect(page.getByText('The secret sauce')).toBeVisible();
+    });
+
+    test('History page', async ({ page }) => {
+      await page.goto('http://localhost:5173/');
+
+
+      await page.getByRole('link', { name: 'History' }).click();
+      await expect(page.getByText('Mama Rucci, my my')).toBeVisible();
+    });
+
+    test('logout', async ({ page }) => {
+        await page.goto('http://localhost:5173/');
+
+        
+        await page.getByRole('link', { name: 'Login' }).click();
+        await page.getByRole('textbox', { name: 'Email address' }).click();
+        await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+        await page.getByRole('textbox', { name: 'Password' }).click();
+        await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+        await page.getByRole('button', { name: 'Login' }).click();
+        await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
+        await page.getByRole('link', { name: 'Logout' }).click();
+        await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
+    });
+
+    test('diner dashboard', async ({ page }) => {
+      await page.goto('http://localhost:5173/');
+      
+
+      await page.getByRole('link', { name: 'Login' }).click();
+      await page.getByRole('textbox', { name: 'Email address' }).click();
+      await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
+      await page.getByRole('textbox', { name: 'Password' }).click();
+      await page.getByRole('textbox', { name: 'Password' }).fill('diner');
+      await page.getByRole('button', { name: 'Login' }).click();
+      await page.getByRole('link', { name: 'pd' }).click();
+      await expect(page.getByText('Your pizza kitchen')).toBeVisible();
+      });
