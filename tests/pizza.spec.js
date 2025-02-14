@@ -98,3 +98,51 @@ test('purchase with login', async ({ page }) => {
     // Check balance
     await expect(page.getByText('0.008')).toBeVisible();
   });
+
+  test('login with incorrect credentials', async ({ page }) => {
+    await page.goto('http://localhost:5173/');
+
+    await page.getByRole('link', { name: 'Register' }).click();
+    await page.getByRole('link', { name: 'Login' }).click();
+    await page.getByRole('textbox', { name: 'Email address' }).fill('fake@jwt.com');
+    await page.getByRole('textbox', { name: 'Password' }).click();
+    await page.getByRole('textbox', { name: 'Password' }).fill('wrongpassword');
+    await page.getByRole('button', { name: 'Login' }).click();
+    await page.getByText('unknown user').isVisible();
+  });
+
+    test('register', async ({ page }) => {
+      await page.goto('http://localhost:5173/');
+
+      await page.getByRole('link', { name: 'Register' }).click();
+
+      await page.getByRole('textbox', { name: 'Full name' }).click();
+      await page.getByRole('textbox', { name: 'Full name' }).fill('a');
+      await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+      await page.getByRole('textbox', { name: 'Password' }).click();
+      await page.getByRole('textbox', { name: 'Password' }).fill('a');
+      await page.getByRole('button', { name: 'Register' }).click();
+      
+      await page.getByText('The web\'s best pizza', { exact: true }).click();
+
+    });
+
+    test('create a franchise, not logged in', async ({ page }) => {
+      await page.goto('http://localhost:5173/');
+
+      await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+      await page.getByText('If you are already a').click();
+      await page.getByRole('link', { name: 'login', exact: true }).click();
+    });
+
+    test('admin login', async ({ page }) => {
+      await page.goto('http://localhost:5173/');
+
+      await page.getByRole('link', { name: 'Login' }).click();
+      await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+      await page.getByRole('textbox', { name: 'Email address' }).press('Tab');
+      await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+      await page.getByRole('button', { name: 'Login' }).click();
+      await page.getByRole('link', { name: 'Admin' }).click();
+      await page.getByText('Mama Ricci\'s kitchen').click();
+    });
