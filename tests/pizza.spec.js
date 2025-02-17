@@ -158,14 +158,6 @@ test('purchase with login', async ({ page }) => {
     });
 
     test('admin create/delete franchise', async ({ page }) => {
-      await page.route('*/**/api/auth', async (route) => {
-        const loginReq = { email: 'a@jwt.com', password: 'admin' };
-        const loginRes = { user: { id: 3, name: 'Admin', email: 'a@jwt.com', roles: [{ role: 'admin' }] }, token: 'abcdef' };
-        expect(route.request().method()).toBe('PUT');
-        expect(route.request().postDataJSON()).toMatchObject(loginReq);
-        await route.fulfill({ json: loginRes });
-      });
-
         await page.goto('http://localhost:5173/');
 
         await page.getByRole('link', { name: 'Login' }).click();
@@ -255,3 +247,26 @@ test('purchase with login', async ({ page }) => {
       await page.getByRole('link', { name: 'Diner' }).click();
       await expect(page.getByText('Your pizza kitchen')).toBeVisible();
       });
+
+      test('create/delete store', async ({ page }) => {
+        await page.goto('http://localhost:5173/');
+    
+        await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+        await expect(page.getByText('So you want a piece of the')).toBeVisible();
+        await page.getByRole('link', { name: 'login', exact: true }).click();
+        await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+        await page.getByRole('textbox', { name: 'Password' }).click();
+        await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+        await page.getByRole('button', { name: 'Login' }).click();
+        
+        await expect(page.getByText('SLC')).toBeVisible();
+        await page.getByRole('button', { name: 'Create store' }).click();
+        await page.getByRole('textbox', { name: 'store name' }).click();
+        await page.getByRole('textbox', { name: 'store name' }).fill('BYU');
+        await page.getByRole('button', { name: 'Create' }).click();
+        await expect(page.getByRole('cell', { name: 'BYU' })).toBeVisible();
+        await page.getByRole('button', { name: 'Close' }).click();
+        await expect(page.getByText('Sorry to see you go')).toBeVisible();
+        await page.getByRole('button', { name: 'Close' }).click();
+        await expect(page.getByText('cell', { name: 'BYU'})).not.toBeVisible();
+    });
