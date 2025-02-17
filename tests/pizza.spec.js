@@ -123,7 +123,7 @@ test('purchase with login', async ({ page }) => {
       await page.getByRole('textbox', { name: 'Password' }).fill('a');
       await page.getByRole('button', { name: 'Register' }).click();
       
-      await page.getByText('The web\'s best pizza', { exact: true }).click();
+      await expect(page.getByText('The web\'s best pizza', { exact: true } )).toBeVisible();
 
     });
 
@@ -154,6 +154,7 @@ test('purchase with login', async ({ page }) => {
       await page.getByRole('button', { name: 'Login' }).click();
       await page.getByRole('link', { name: 'Admin' }).click();
       await page.getByText('Mama Ricci\'s kitchen').click();
+      await expect(page.getByText('Mama Ricci\'s kitchen', { exact: true } )).toBeVisible();
     });
 
     test('admin create/delete franchise', async ({ page }) => {
