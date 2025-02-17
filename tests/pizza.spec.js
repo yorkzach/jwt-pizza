@@ -118,7 +118,7 @@ test('purchase with login', async ({ page }) => {
 
       await page.getByRole('textbox', { name: 'Full name' }).click();
       await page.getByRole('textbox', { name: 'Full name' }).fill('a');
-      await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+      await page.getByRole('textbox', { name: 'Email address' }).fill('test@jwt.com');
       await page.getByRole('textbox', { name: 'Password' }).click();
       await page.getByRole('textbox', { name: 'Password' }).fill('a');
       await page.getByRole('button', { name: 'Register' }).click();
