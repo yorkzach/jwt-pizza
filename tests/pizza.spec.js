@@ -187,7 +187,7 @@ test('purchase with login', async ({ page }) => {
         await expect(page.getByRole('cell', { name: 'BYU' })).toBeVisible();
 
         
-        await page.getByRole('row', { name: 'BYU 常用名字 Close' }).getByRole('button').click();
+        await page.getByRole('row', { name: 'BYU Admin Close' }).getByRole('button').click();
         await expect(page.getByText('Sorry to see you go')).toBeVisible();
         await page.getByRole('button', { name: 'Close' }).click();
         await expect(page.getByRole('cell', { name: 'BYU' })).not.toBeVisible();
@@ -235,8 +235,8 @@ test('purchase with login', async ({ page }) => {
 
     test('diner dashboard', async ({ page }) => {
       await page.route('*/**/api/auth', async (route) => {
-        const loginReq = { email: 'd@jwt.com', password: 'diner' };
-        const loginRes = { user: { id: 3, name: 'Diner', email: 'd@jwt.com', roles: [{ role: 'Diner' }] }, token: 'abcdef' };
+        const loginReq = { email: 'diner@jwt.com', password: 'diner' };
+        const loginRes = { user: { id: 3, name: 'Diner', email: 'diner@jwt.com', roles: [{ role: 'diner' }] }, token: 'abcdef' };
         expect(route.request().method()).toBe('PUT');
         expect(route.request().postDataJSON()).toMatchObject(loginReq);
         await route.fulfill({ json: loginRes });
@@ -247,10 +247,10 @@ test('purchase with login', async ({ page }) => {
 
       await page.getByRole('link', { name: 'Login' }).click();
       await page.getByRole('textbox', { name: 'Email address' }).click();
-      await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
+      await page.getByRole('textbox', { name: 'Email address' }).fill('diner@jwt.com');
       await page.getByRole('textbox', { name: 'Password' }).click();
       await page.getByRole('textbox', { name: 'Password' }).fill('diner');
       await page.getByRole('button', { name: 'Login' }).click();
-      await page.getByRole('link', { name: 'pd' }).click();
+      await page.getByRole('link', { name: 'Diner' }).click();
       await expect(page.getByText('Your pizza kitchen')).toBeVisible();
       });
