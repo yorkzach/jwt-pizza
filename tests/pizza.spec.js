@@ -123,7 +123,7 @@ test('purchase with login', async ({ page }) => {
       await page.getByRole('textbox', { name: 'Password' }).fill('a');
       await page.getByRole('button', { name: 'Register' }).click();
       
-      await expect(page.getByText('The web\'s best pizza', { exact: true } )).toBeVisible();
+      await expect(page.getByText('The web\'s best pizza')).toBeVisible();
 
     });
 
@@ -153,8 +153,8 @@ test('purchase with login', async ({ page }) => {
       await page.getByRole('textbox', { name: 'Password' }).fill('admin');
       await page.getByRole('button', { name: 'Login' }).click();
       await page.getByRole('link', { name: 'Admin' }).click();
-      await page.getByText('Mama Ricci\'s kitchen').click();
-      await expect(page.getByText('Mama Ricci\'s kitchen', { exact: true } )).toBeVisible();
+
+      await expect(page.getByText('Mama Ricci\'s kitchen')).toBeVisible();
     });
 
     test('admin create/delete franchise', async ({ page }) => {
@@ -203,10 +203,9 @@ test('purchase with login', async ({ page }) => {
     });
 
     test('logout', async ({ page }) => {
-
       await page.route('*/**/api/auth', async (route) => {
-        const loginReq = { email: 'a@jwt.com', password: 'admin' };
-        const loginRes = { user: { id: 3, name: 'Admin', email: 'a@jwt.com', roles: [{ role: 'admin' }] }, token: 'abcdef' };
+        const loginReq = { email: 'testy@jwt.com', password: 'a' };
+        const loginRes = { user: { id: 3, name: 'tester', email: 'testy@jwt.com', roles: [{ role: 'diner' }] }, token: 'abcdefg' };
         expect(route.request().method()).toBe('PUT');
         expect(route.request().postDataJSON()).toMatchObject(loginReq);
         await route.fulfill({ json: loginRes });
@@ -217,9 +216,9 @@ test('purchase with login', async ({ page }) => {
         
         await page.getByRole('link', { name: 'Login' }).click();
         await page.getByRole('textbox', { name: 'Email address' }).click();
-        await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+        await page.getByRole('textbox', { name: 'Email address' }).fill('testy@jwt.com');
         await page.getByRole('textbox', { name: 'Password' }).click();
-        await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+        await page.getByRole('textbox', { name: 'Password' }).fill('a');
         await page.getByRole('button', { name: 'Login' }).click();
         await expect(page.getByRole('link', { name: 'Logout' })).toBeVisible();
         await page.getByRole('link', { name: 'Logout' }).click();
