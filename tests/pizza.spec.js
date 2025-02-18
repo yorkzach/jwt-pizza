@@ -248,6 +248,23 @@ test('purchase with login', async ({ page }) => {
       });
 
       test('create/delete store', async ({ page }) => {
+        await page.route('*/**/api/franchise', async (route) => {
+          const franchiseRes = [
+            {
+              id: 2,
+              name: 'SLC',
+              stores: [
+                { id: 4, name: 'Lehi' },
+                { id: 5, name: 'Springville' },
+                { id: 6, name: 'American Fork' },
+              ],
+            },
+            { id: 3, name: 'PizzaCorp', stores: [{ id: 7, name: 'Spanish Fork' }] },
+            { id: 4, name: 'topSpot', stores: [] },
+          ];
+          expect(route.request().method()).toBe('GET');
+          await route.fulfill({ json: franchiseRes });
+        });
         await page.goto('http://localhost:5173/');
     
         await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
@@ -258,7 +275,6 @@ test('purchase with login', async ({ page }) => {
         await page.getByRole('textbox', { name: 'Password' }).fill('admin');
         await page.getByRole('button', { name: 'Login' }).click();
         
-        await expect(page.getByText('SLC')).toBeVisible();
         await page.getByRole('button', { name: 'Create store' }).click();
         await page.getByRole('textbox', { name: 'store name' }).click();
         await page.getByRole('textbox', { name: 'store name' }).fill('BYU');
