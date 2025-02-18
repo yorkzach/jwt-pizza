@@ -61,7 +61,7 @@ test('purchase with login', async ({ page }) => {
     await route.fulfill({ json: orderRes });
   });
 
-  await page.goto('/');
+  await page.goto('http://localhost:5173/');
 
   // Go to order page
   await page.getByRole('button', { name: 'Order now' }).click();
@@ -114,7 +114,7 @@ test('view franchise details as diner', async ({ page }) => {
   });
 
   // Navigate to the homepage
-  await page.goto('/');
+  await page.goto('http://localhost:5173/');
 
   // Go to the Franchise page
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
@@ -151,7 +151,7 @@ test("login as admin", async ({ page }) => {
     await route.fulfill({ json: franchiseRes });
   });
 
-  await page.goto('/');
+  await page.goto('http://localhost:5173/');
 
   // Go to login page
 
@@ -179,7 +179,7 @@ test('create franchise as admin', async ({ page }) => {
     await route.fulfill({ json: loginRes });
   });
 
-  await page.goto('/');
+  await page.goto('http://localhost:5173/');
 
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).click();
@@ -207,7 +207,7 @@ test("view diner dashboard as diner", async ({ page }) => {
     await route.fulfill({ json: loginRes });
   });
 
-  await page.goto('/');
+  await page.goto('http://localhost:5173/');
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('t@jwt.com');
   await page.getByRole('textbox', { name: 'Password' }).click();
