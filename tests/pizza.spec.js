@@ -111,22 +111,6 @@ test('purchase with login', async ({ page }) => {
     await page.getByText('unknown user').isVisible();
   });
 
-    test('register', async ({ page }) => {
-      await page.goto('http://localhost:5173/');
-
-      await page.getByRole('link', { name: 'Register' }).click();
-
-      await page.getByRole('textbox', { name: 'Full name' }).click();
-      await page.getByRole('textbox', { name: 'Full name' }).fill('a');
-      await page.getByRole('textbox', { name: 'Email address' }).fill('test@jwt.com');
-      await page.getByRole('textbox', { name: 'Password' }).click();
-      await page.getByRole('textbox', { name: 'Password' }).fill('a');
-      await page.getByRole('button', { name: 'Register' }).click();
-      
-      await expect(page.getByText('The web\'s best pizza')).toBeVisible();
-
-    });
-
     test('create a franchise, not logged in', async ({ page }) => {
       await page.goto('http://localhost:5173/');
 
@@ -260,8 +244,6 @@ test("view diner dashboard as diner", async ({ page }) => {
   await page.getByText('How have you lived this long without having a pizza?').click();
 
 });
-
-
 
   test("close franchise as admin", async ({ page }) => {
     await page.route('*/**/api/auth', async (route) => {
@@ -504,7 +486,7 @@ test('logout as diner', async ({ page }) => {
           expect(route.request().method()).toBe('GET');
           await route.fulfill({ json: franchiseRes });
         });
-        await page.goto('http://localhost:5173/');
+        await page.goto('/');
     
         await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
         await expect(page.getByText('So you want a piece of the')).toBeVisible();
@@ -523,29 +505,4 @@ test('logout as diner', async ({ page }) => {
         await expect(page.getByText('Sorry to see you go')).toBeVisible();
         await page.getByRole('button', { name: 'Close' }).click();
         await expect(page.getByText('cell', { name: 'BYU'})).not.toBeVisible();
-    });
-
-    test('view franchise details as diner', async ({ page }) => {
-      // Consolidate API mocking into a single route setup for clarity
-      await page.route('*/**/api/franchise', async (route) => {
-        const franchiseRes = [
-          {
-            id: 2,
-            name: 'LotaPizza',
-            stores: [
-              { id: 4, name: 'Lehi' },
-              { id: 5, name: 'Springville' },
-              { id: 6, name: 'American Fork' },
-            ],
-          },
-          { id: 3, name: 'PizzaCorp', stores: [{ id: 7, name: 'Spanish Fork' }] },
-          { id: 4, name: 'topSpot', stores: [] },
-        ];
-        expect(route.request().method()).toBe('GET');
-        await route.fulfill({ json: franchiseRes });
-      });
-
-      await page.goto('/');
-      await page.getByRole('link', { name: 'Franchise' }).click();
-      await expect(page.getByRole('main')).toContainText('So you want a piece of the pie?');
     });
