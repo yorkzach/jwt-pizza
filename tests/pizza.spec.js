@@ -526,15 +526,6 @@ test('logout as diner', async ({ page }) => {
 
 });
 
-
-  
-ChatGPT said:
-Here are the refactored tests for your Playwright project, excluding any modifications to the "purchase with login" test:
-
-javascript
-Copy
-import { test, expect } from 'playwright-test-coverage';
-
 test('view franchise details as diner', async ({ page }) => {
   // Consolidate API mocking into a single route setup for clarity
   await page.route('*/**/api/franchise', async (route) => {
