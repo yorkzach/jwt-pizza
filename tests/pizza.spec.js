@@ -213,7 +213,7 @@ test("view diner dashboard as diner", async ({ page }) => {
   await page.getByRole('textbox', { name: 'Password' }).click();
   await page.getByRole('textbox', { name: 'Password' }).fill('test');
   await page.getByRole('button', { name: 'Login' }).click();
-  await page.getByRole('link', { name: 'n', exact: true }).click();
+  await page.getByRole('link', { name: 'z', exact: true }).click();
   await expect(page.getByRole('heading')).toContainText('Your pizza kitchen');
   await page.getByText('How have you lived this long without having a pizza?').click();
 
@@ -376,7 +376,7 @@ test('logout as diner', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
 
   //Wait for successful login and rerouting
-  await page.waitForURL('/')
+  await page.waitForURL('http://localhost:5173/')
 
   // Simulate Logout
   await page.getByRole('link', { name: 'Logout' }).click();
