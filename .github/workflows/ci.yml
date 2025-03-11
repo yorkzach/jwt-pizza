@@ -59,7 +59,7 @@ jobs:
       version: ${{needs.build.outputs.version}}
     environment:
       name: staging
-      url: https://stage-pizza.byucsstudent.click
+      url: https://stage-pizza.yorkpizza.click
     steps:
       - name: Create OIDC token to AWS
         uses: aws-actions/configure-aws-credentials@v4
